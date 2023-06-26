@@ -1,0 +1,41 @@
+
+
+ <!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <title>Regression Model</title>
+</head>
+<body>
+    <h1>Regression Model</h1>
+    <form action="/predict" method="post">
+        <label for="rm">RM:</label>
+        <input type="number" name="rm" id="rm" step="any"><br>
+
+        <label for="ptratio">PTRATIO:</label>
+        <input type="number" name="ptratio" id="ptratio" step="any"><br>
+
+        <label for="lstat">LSTAT:</label>
+        <input type="number" name="lstat" id="lstat" step="any"><br>
+
+        <input type="submit" value="Predict">
+    </form>
+    <h2>Prediction: <span id="prediction"></span></h2>
+
+    <script>
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: new FormData(form)
+            });
+
+            const result = await response.json();
+            document.getElementById('prediction').textContent = result.prediction;
+        });
+    </script>
+</body>
+</html>
